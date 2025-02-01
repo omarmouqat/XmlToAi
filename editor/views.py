@@ -60,6 +60,15 @@ from .forms import TextEditorForm
 from lxml import etree
 from django.http import HttpResponse
 
+from dotenv import load_dotenv, dotenv_values
+
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+
+load_dotenv()
+
 content = ""
 path_to_train_data = ""
 train_data = ""
@@ -245,6 +254,32 @@ def execute_script(request):
                                                     'input_for_prediction': ""})
 
 def contact_us(request):
-    return render(request, '')
+    return render(request, 'ContactUs.html')
+def send_email(request):
+    subject = request.POST['subject']
+    message = request.POST['message']
+
+    # Email credentials
+    SMTP_SERVER = "smtp.gmail.com"
+    SMTP_PORT = 587
+    EMAIL_ADDRESS = os.getenv("USER_EMAIL")
+    EMAIL_PASSWORD = os.getenv("USER_PASSWORD")  # Use App Passwords for Gmail
+
+    # Create email message
+    msg = MIMEMultipart()
+    msg["From"] = EMAIL_ADDRESS
+    msg["To"] = EMAIL_ADDRESS
+    msg["Subject"] = subject
+    msg.attach(MIMEText(message, "plain"))
+
+    # Send email
+    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+        server.starttls()  # Secure the connection
+        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+        server.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, msg.as_string())
+
+    print("Email sent successfully!")
+    return render(request, 'ContactUs.html',{'message': 'message sent'})
+
 
 

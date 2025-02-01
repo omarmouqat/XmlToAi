@@ -10,6 +10,8 @@ urlpatterns = [
     path('tutorial/', views.tutorial, name='tutorial'),
     path('execute/', views.execute, name='execute'),
     path('execute/script', views.execute_script, name='execute_script'),
+    path('ContactUs/', views.contact_us, name='contact_us'),
+    path('ContactUs/send_email', views.send_email, name='send_email'),
 
 ]
 

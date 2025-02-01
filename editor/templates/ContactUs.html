@@ -5,6 +5,16 @@
     <title>Contact Us</title>
 </head>
 <body>
-
+<form action="{% url 'send_email' %}" method="post">
+    {% csrf_token %}
+    <input name="subject">
+    <br>
+    <textarea name="message"></textarea>
+    <br>
+    <input type="submit" value="send">
+</form>
+    {% if message %}
+    	<h1>{{ message }}</h1>
+    {% endif %}
 </body>
 </html>
