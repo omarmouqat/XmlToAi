@@ -1,0 +1,209 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online JS Compiler</title>
+    <!-- CodeMirror CSS (for styling) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.7/codemirror.min.css">
+
+    <!-- CodeMirror Theme -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.7/theme/dracula.min.css">
+
+    <!-- CodeMirror JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.7/codemirror.min.js"></script>
+
+    <!-- CodeMirror XML Mode -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.7/mode/xml/xml.min.js"></script>
+    <!-- CodeMirror Python Mode -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.7/mode/python/python.min.js"></script>
+    <link rel="stylesheet" href="{% static 'Style/editor.css' %}">
+
+</head>
+<body>
+    <div class="header">
+        <table style="width: 90%;margin-left: 5%">
+            <td style="width: 40%;">
+                <h1>
+                    <a style="
+                    text-decoration-line: none;
+                    color: white;
+                    background-color: #5252a8;
+                    border-radius: 10px;
+                    border-color: white;
+                    padding: 10px;
+                    margin-block: 20px;
+                    " href="{% url 'editor' %}" >Xml Translator</a>
+                </h1>
+            </td>
+            <td style="width: 20%; text-align: center;">
+                <h2 class="header_links">
+                    <a style="
+                    text-decoration-line: none;
+                    color: white;
+                    " href="{% url 'execute' %}" >Execute</a>
+                </h2>
+            </td>
+            <td style="width: 20%; text-align : center;">
+                <h2 class="header_links">
+                    <a style="
+                    text-decoration-line: none;
+                    color: white;
+                    " href="{% url 'tutorial' %}" >Tutorials</a>
+                </h2>
+            </td>
+            <td style="width: 20%; text-align : center;">
+                <h2 class="header_links">
+                    <a style="
+                    text-decoration-line: none;
+                    color: white;
+                    " href="{% url 'contact_us' %}" >Contact Us</a>
+                </h2>
+            </td>
+
+        </table>
+
+    </div>
+    <div class="container">
+        <div class="editor_container">
+          <div class="editor_header">
+            <table style="width: 100%;">
+              <td style="width: 20%;">
+                <div class="window_buttons" style="background-color: red;"></div>
+                <div class="window_buttons" style="background-color: yellow;"></div>
+                <div class="window_buttons" style="background-color: green;"></div>
+              </td>
+              <td style="text-align: end;width: 79.8%; padding: 10px;">
+
+
+                <form action="{% url 'transform' %}" class="linear_form" method="post" >
+                    {% csrf_token %}
+
+                  <select class="form_button" name="options" id="options">
+                    <option value="LR-PT">Linear Regression Pytorche</option>
+                    <option value="IC-PT">Image Classification Pytorche</option>
+                    <option value="LR-TF" selected>Linear Regression TensorFlow</option>
+                    <option value="IC-TF">Image Classification TensorFlow</option>
+                  </select>
+                    <textarea name="code" id="code_in_form" hidden>//</textarea>
+                  <button id="submit_tansform" class="form_button">Transform</button>
+                </form>
+
+
+                <form id="file_form" action="{% url 'upload' %}" method="post" class="linear_form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                  <label for="file" class="form_button">Upload</label>
+                  <input type="file" name="file" id="file" hidden>
+                </form>
+
+
+
+              </td>
+            </table>
+          </div>
+            {% if content != None %}
+            <textarea class="code" id="code">{{ content }}</textarea>
+            {% else %}
+            <textarea class="code" id="code">// write your xml file </textarea>
+            {% endif %}
+        </div>
+
+
+
+        <div class="console">
+          <div class="editor_header">
+            <table style="width: 100%;">
+              <td style="width: 20%;">
+                <div class="window_buttons" style="background-color: red;"></div>
+                <div class="window_buttons" style="background-color: yellow;"></div>
+                <div class="window_buttons" style="background-color: green;"></div>
+              </td>
+              <td style="text-align: end;width: 79.8%; padding: 10px;">
+
+                {% if errors == None and output != None %}
+                <form action="{% url 'download_python' %}" method="post" class="linear_form">
+                    {% csrf_token %}
+                    <textarea name="output" id="output_copy" hidden>{{ output }}</textarea>
+                  <input type="text" name="file_name" id="file_name" class="form_button" placeholder="File Name">
+                  <input type="submit" value="Download" class="form_button">
+                </form>
+                {% endif %}
+              </td>
+            </table>
+          </div>
+            {% if errors != None %}
+                <textarea class="code" id="output" style="color: red;height: 450px;" disabled>{{errors}}</textarea>
+            {% elif output %}
+            	<textarea class="code" id="output" disabled>{{output}}</textarea>
+                <script>
+                    // Initialize the CodeMirror editor
+                    var editor = CodeMirror.fromTextArea(document.getElementById('output'), {
+                        mode: 'python', // Set the mode to XML
+                        lineNumbers: true, // Display line numbers
+                        theme: 'dracula', // Set the theme to dracula (you can change this)
+                        indentUnit: 4, // Set indentation level
+                        matchBrackets: true, // Highlight matching brackets
+                        autoCloseTags: true, // Auto close XML tags
+                        lineWrapping: true, // Enable line wrapping for long lines
+                    });
+                    editor.getWrapperElement().style.height = '450px';
+                </script>
+            {% else %}
+            	<textarea class="code" id="output" style="height: 450px" disabled>//no out put or errors</textarea>
+            {% endif %}
+        </div>
+        <!-- <div class="console">
+            <textarea class="output" id="output" readonly>hellodzdzworld</textarea>
+        </div> -->
+    </div>
+    <br>
+    <hr style="color: #202020">
+    <h4 style="text-align: center">Copyright &#169; 2025 Xml Translator. All Rights Reserved.</h4>
+    <table>
+        <td>
+
+        </td>
+    </table>
+    <script>
+        // Initialize the CodeMirror editor
+        const form = document.getElementById("file_form");
+        const file = document.getElementById("file");
+        //const code = document.getElementById("code");
+        const code_in_form = document.getElementById("code_in_form");
+        const button_submit = document.getElementById("submit_tansform");
+        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            mode: 'xml', // Set the mode to XML
+            lineNumbers: true, // Display line numbers
+            theme: 'dracula', // Set the theme to dracula (you can change this)
+            indentUnit: 4, // Set indentation level
+            matchBrackets: true, // Highlight matching brackets
+            autoCloseTags: true, // Auto close XML tags
+            lineWrapping: true, // Enable line wrapping for long lines
+        });
+        editor.getWrapperElement().style.height = '450px';
+
+        //automaticlly submit the first form after uploading a file
+        file.addEventListener("change",function(){
+            form.submit();
+        })
+
+        //initialize the value of the input to match the code value
+        code_in_form.value = editor.getValue();
+
+
+        button_submit.addEventListener("click",function () {
+            code_in_form.innerText = editor.innerHTML;
+        })
+
+        //working on coppying the value of the code section into the form field
+        editor.on("change", function () {
+            code_in_form.value = editor.getValue();
+        })
+        function syncCodeMirrorToHiddenInput() {
+            code_in_form.value = editor.getValue();
+        }
+
+    </script>
+</body>
+</html>

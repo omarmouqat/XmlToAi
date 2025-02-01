@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Execute</title>
+    <link rel="stylesheet" href="{% static 'Style/execute.css' %}">
+</head>
+<body>
+    <div class="header">
+        <table style="width: 90%;margin-left: 5%">
+            <td style="width: 40%;">
+                <h1>
+                    <a style="
+                    text-decoration-line: none;
+                    color: white;
+                    background-color: #5252a8;
+                    border-radius: 10px;
+                    border-color: white;
+                    padding: 10px;
+                    margin-block: 20px;
+                    " href="{% url 'editor' %}" >Xml Translator</a>
+                </h1>
+            </td>
+            <td style="width: 20%; text-align: center;">
+                <h2 class="header_links">
+                    <a style="
+                    text-decoration-line: none;
+                    color: white;
+                    " href="{% url 'execute' %}" >Execute</a>
+                </h2>
+            </td>
+            <td style="width: 20%; text-align : center;">
+                <h2 class="header_links">
+                    <a style="
+                    text-decoration-line: none;
+                    color: white;
+                    " href="{% url 'tutorial' %}" >Tutorials</a>
+                </h2>
+            </td>
+            <td style="width: 20%; text-align : center;">
+                <h2 class="header_links">
+                    <a style="
+                    text-decoration-line: none;
+                    color: white;
+                    " href="{% url 'contact_us' %}" >Contact Us</a>
+                </h2>
+            </td>
+
+        </table>
+
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+    {% if content %}
+        <div class="title_holder">
+            <h1>Your Model Is Trained :</h1>
+        </div>
+        <div class="upload_controlls_holder" style="height: fit-content;padding-inline: 2%">
+            <form action="{% url 'execute_script' %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="input_for_prediction" id="input_for_prediction" class="upload_controlls"
+                       value="{{ input_for_prediction }}"
+                       placeholder="Enter the input for prediction"
+                       style="flex: 10;"
+                       required>
+
+                <textarea type="text" name="ml_script_content_for_training" id="ml_script_content_for_training" hidden>{{ ml_script_content }}</textarea>
+                <textarea type="text" name="train_data_content_for_training" id="train_data_content_for_training"  hidden>{{ train_data_content }}</textarea>
+                <input type="submit" value="Predict" class="upload_controlls"
+                style="flex: 2;">
+            </form>
+        <div class="title_holder">
+            <h1>{{ content }}</h1>
+        </div>
+        </div>
+    {% else %}
+        <div class="title_holder">
+            <h1>Execute Python ML Scripts :</h1>
+        </div>
+        <div class="upload_controlls_holder">
+            <form action="{% url 'execute_script' %}" method="post">
+                {% csrf_token %}
+                <label id="ml_script_label" for="ml_script" class="upload_controlls">ML Script</label>
+                <label id="train_data_label" for="train_data" class="upload_controlls">Training Data</label>
+
+                <input type="submit" value="Train" class="upload_controlls">
+
+                <input type="file" name="ml_script" id="ml_script" hidden required>
+                <input type="file" name="train_data" id="train_data" hidden required>
+
+                <textarea type="text" name="ml_script_content_for_training" id="ml_script_content_for_training" hidden></textarea>
+                <textarea type="text" name="train_data_content_for_training" id="train_data_content_for_training"  hidden></textarea>
+
+            </form>
+        </div>
+    {% endif %}
+<script src="{% static 'Script/execute.js' %}"></script>
+</body>
+</html>
+    

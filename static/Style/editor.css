@@ -1,0 +1,135 @@
+
+/* Styling the scrollbars */
+::-webkit-scrollbar {
+    width: 10px; /* Adjust the width of the scrollbar */
+}
+
+/* Scrollbar track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Light gray background */
+    border-radius: 10px; /* Rounded track */
+}
+
+/* Scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+    background-color: #262650; /* Darker thumb color */
+    border-radius: 10px; /* Rounded thumb */
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+}
+
+/* Scrollbar thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Darker thumb when hovered */
+}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #1a1a3d;
+    color: white;
+}
+.container {
+    display: flex;
+    height: 100vh;
+}
+.editor_container, .console {
+    flex: 1;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.editor_container {
+    background-color: #1e1e3f;
+}
+.editor_header{
+  background-color: #16181e;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+    height: 60px;
+}
+.console {
+    background-color: #1a1a3d;
+    padding: 20px;
+}
+.header {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    background-color: #2e2e5f;
+    height: 70px;
+}
+.header .title {
+    flex: 1;
+}
+.header button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #4e4e8f;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+.header button:hover {
+    background-color: #6e6ebf;
+}
+.code {
+    width: 100%;
+    height: calc(100% - 40px);
+    background-color: #0e0e1f;
+    color: white;
+    border: none;
+    padding: 10px;
+    box-sizing: border-box;
+    font-family: monospace;
+    font-size: 18px;
+}
+.output {
+    width: 100%;
+    height: calc(100% - 40px);
+    background-color: #1a1a3d;
+    color: white;
+    border: none;
+    padding: 10px;
+    box-sizing: border-box;
+    font-family: monospace;
+    font-size: 14px;
+}
+.window_buttons{
+  height: 20px;
+  width: 20px;
+  border-radius: 10px;
+  background-color: red;
+  display: inline-block;
+  margin: 4px;
+  margin-inline: 6px;
+}
+.form_button{
+  height: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border-style: none;
+  background-color: #2e2e5f;
+  display: inline-block;
+  margin-inline: 10px;
+  font-size: 13px;
+  color: white;
+  outline-style: none;
+}
+.header_links{
+    text-decoration-line: none;
+    font-size: larger;
+    color: white;
+}
+.header_links:hover{
+    transform: scale(1.1);
+    transition: ease;
+}
+
+.linear_form{
+  display: inline-block;
+}
+#output{
+    background-color: #282a36;
+    resize: none;
+}
+a{
+    font-family: "Microsoft JhengHei UI Light";
+}

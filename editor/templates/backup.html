@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Text Editor</title>
+    <style>
+        .ace_editor {
+            width: 100%;
+            height: 80%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Text Editor</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="file">
+        <select name="options">
+            <option value="pythorch" selected> Pytorch </option>
+            <option value="tensorflow" selected> TensorFlow </option>
+        </select>
+        <textarea name="text">helooooo every one how are you doing</textarea>
+        <button type="submit">Upload File</button>
+    </form>
+    {% if filename %}
+    <form method="post" action="{% url 'download' filename %}">
+        {% csrf_token %}
+        <input type="hidden" name="filename" value="{{ filename }}">
+        {{ form.media }}
+        {{ form }}
+        <button type="submit">Download Edited File</button>
+    {{ options }}
+    {{ text }}
+    </form>
+    {% endif %}
+</body>
+</html>
