@@ -255,10 +255,24 @@ def execute_script(request):
 
 def contact_us(request):
     return render(request, 'ContactUs.html')
-def send_email(request):
-    subject = request.POST['subject']
-    message = request.POST['message']
 
+def send_email(request):
+    user_name = request.POST['user_name']
+    receiver_email = request.POST['user_email']
+    subject = request.POST['subject']
+    message = "FROM  : "+user_name+" / "+receiver_email+":\n"+request.POST['message']
+
+
+    #this email will be sent to our team to review it later
+    send_email_function(os.getenv("USER_EMAIL"),subject, message)
+
+    message = "Your message has been received successfully!\nOur team will respond in the quickest possible.\nXml Translator."
+    #this will be sen to the user to say that his message is received successfully
+    send_email_function(receiver_email,"Xml Translator !","Hello,"+user_name+"!\n"+message)
+
+    return render(request, 'ContactUs.html',{'message': 'Your message has been received successfully!'})
+
+def send_email_function(receiver, subject, message):
     # Email credentials
     SMTP_SERVER = "smtp.gmail.com"
     SMTP_PORT = 587
@@ -268,7 +282,7 @@ def send_email(request):
     # Create email message
     msg = MIMEMultipart()
     msg["From"] = EMAIL_ADDRESS
-    msg["To"] = EMAIL_ADDRESS
+    msg["To"] = receiver
     msg["Subject"] = subject
     msg.attach(MIMEText(message, "plain"))
 
@@ -276,10 +290,6 @@ def send_email(request):
     with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
         server.starttls()  # Secure the connection
         server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-        server.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, msg.as_string())
+        server.sendmail(EMAIL_ADDRESS, receiver, msg.as_string())
 
     print("Email sent successfully!")
-    return render(request, 'ContactUs.html',{'message': 'message sent'})
-
-
-

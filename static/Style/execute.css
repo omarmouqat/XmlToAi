@@ -35,7 +35,6 @@ body {
     display: flex;
     align-items: center;
     padding: 5px;
-    background-color: #2e2e5f;
     height: 70px;
 }
 .header .title {
@@ -108,7 +107,7 @@ form{
     justify-content: space-around;
 }
 input::placeholder {
-  color: blue;
+  color: whitesmoke;
 }
 .train_section_holder{
     margin: 15%;

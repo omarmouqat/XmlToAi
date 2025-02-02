@@ -37,7 +37,6 @@ body {
     box-sizing: border-box;
 }
 .editor_container {
-    background-color: #1e1e3f;
 }
 .editor_header{
   background-color: #16181e;
@@ -46,14 +45,12 @@ body {
     height: 60px;
 }
 .console {
-    background-color: #1a1a3d;
     padding: 20px;
 }
 .header {
     display: flex;
     align-items: center;
     padding: 5px;
-    background-color: #2e2e5f;
     height: 70px;
 }
 .header .title {
