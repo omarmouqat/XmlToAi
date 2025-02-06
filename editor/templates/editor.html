@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online JS Compiler</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/addon/hint/show-hint.min.css">
     <!-- CodeMirror CSS (for styling) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.7/codemirror.min.css">
 
@@ -19,6 +21,14 @@
     <!-- CodeMirror Python Mode -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.7/mode/python/python.min.js"></script>
     <link rel="stylesheet" href="{% static 'Style/editor.css' %}">
+
+
+    <!-- Addon for autocomplete -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/addon/hint/anyword-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/addon/hint/python-hint.min.js"></script>
+
+
 
 </head>
 <body>
@@ -81,9 +91,9 @@
 
                   <select class="form_button" name="options" id="options">
                     <option value="LR-PT">Linear Regression Pytorche</option>
-                    <option value="IC-PT">Image Classification Pytorche</option>
+                    <option value="IC-PT">Text Classification Pytorche</option>
                     <option value="LR-TF" selected>Linear Regression TensorFlow</option>
-                    <option value="IC-TF">Image Classification TensorFlow</option>
+                    <option value="IC-TF">Text Classification TensorFlow</option>
                   </select>
                     <textarea name="code" id="code_in_form" hidden>//</textarea>
                   <button id="submit_tansform" class="form_button">Transform</button>
@@ -141,14 +151,21 @@
                 <script>
                     // Initialize the CodeMirror editor
                     var editor = CodeMirror.fromTextArea(document.getElementById('output'), {
-                        mode: 'python', // Set the mode to XML
-                        lineNumbers: true, // Display line numbers
-                        theme: 'dracula', // Set the theme to dracula (you can change this)
-                        indentUnit: 4, // Set indentation level
-                        matchBrackets: true, // Highlight matching brackets
-                        autoCloseTags: true, // Auto close XML tags
-                        lineWrapping: true, // Enable line wrapping for long lines
+                        mode: 'python',
+                        lineNumbers: true,
+                        theme: 'dracula',
+                        indentUnit: 4,
+                        matchBrackets: true,
+                        autoCloseTags: true,
+                        lineWrapping: true,
+                        extraKeys: {
+                            "Ctrl-Space": "autocomplete"  // Trigger autocomplete with Ctrl + Space
+                        },
+                        hintOptions: {
+                            completeSingle: false  // Prevents auto-selecting the first option
+                        }
                     });
+
                     editor.getWrapperElement().style.height = '450px';
                 </script>
             {% else %}
@@ -182,6 +199,18 @@
             matchBrackets: true, // Highlight matching brackets
             autoCloseTags: true, // Auto close XML tags
             lineWrapping: true, // Enable line wrapping for long lines
+            extraKeys: {
+            "Ctrl-Space": "autocomplete"  // Press Ctrl + Space to trigger autocomplete
+            },
+            hintOptions: {
+                completeSingle: false  // Prevents auto-selecting the first option
+            }
+        });
+        // Auto-trigger autocomplete after typing "<" (useful for XML)
+        editor.on("inputRead", function(cm, event) {
+            if (event.origin === "+input" && event.text[0] === "<") {
+                cm.showHint();
+            }
         });
         editor.getWrapperElement().style.height = '450px';
 

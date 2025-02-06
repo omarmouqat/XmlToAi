@@ -161,11 +161,11 @@ def transform_file(request):
                     case 'LR-TF':
                         checkers_rel_path = 'tensorflow/linearRegression/'
                     case 'IC-TF':
-                        checkers_rel_path = 'tensorflow/imagesClassification/'
+                        checkers_rel_path = 'tensorflow/TextClassification/'
                     case 'LR-PT':
                         checkers_rel_path = 'pytorche/linearRegression/'
                     case 'IC-PT':
-                        checkers_rel_path = 'pytorche/imagesClassification/'
+                        checkers_rel_path = 'pytorche/TextClassification/'
 
                 #if option == 'LR-TF':
                 #xml = etree.fromstring(input_code)

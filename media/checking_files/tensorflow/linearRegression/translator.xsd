@@ -1,31 +1,10 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <!-- Root element -->
     <xs:element name="Pipeline">
         <xs:complexType>
             <xs:sequence>
-                <!-- Preprocessing Section: Multiple steps allowed -->
-                <xs:element name="Preprocessing">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Step" maxOccurs="unbounded">
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xs:element name="Name" type="xs:string"/>
-                                        <xs:element name="Parameters" minOccurs="0">
-                                            <xs:complexType>
-                                                <xs:sequence>
-                                                    <xs:element name="Height" type="xs:int" minOccurs="0"/>
-                                                    <xs:element name="Width" type="xs:int" minOccurs="0"/>
-                                                </xs:sequence>
-                                            </xs:complexType>
-                                        </xs:element>
-                                    </xs:sequence>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
-
-                <!-- Training Section: Exactly one step with parameters -->
                 <xs:element name="Training">
                     <xs:complexType>
                         <xs:sequence>
@@ -36,7 +15,9 @@
                                         <xs:element name="Parameters">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                    <xs:element name="LearningRate" type="xs:float"/>
+                                                    <xs:element name="Epochs" type="xs:positiveInteger"/>
+                                                    <xs:element name="LearningRate" type="xs:decimal"/>
+                                                    <xs:element name="PredictContext" type="xs:string"/>
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
@@ -46,23 +27,8 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-
-                <!-- Validation Section: Multiple steps allowed -->
-                <xs:element name="Validation" minOccurs="0">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Step" maxOccurs="unbounded">
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xs:element name="Name" type="xs:string"/>
-                                    </xs:sequence>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
-
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+
 </xs:schema>
